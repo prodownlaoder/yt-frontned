@@ -42,7 +42,7 @@ export class SearchboxComponent {
   private router = inject(Router);
 
   @ViewChild('dropdownRef', { static: false }) dropdownRef!: ElementRef;
-  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('searchInput', { static: false }) searchInput!: ElementRef<HTMLInputElement>;
 
   toggleDropdown(event?: MouseEvent) {
     event?.stopPropagation();
@@ -65,16 +65,20 @@ export class SearchboxComponent {
     }
   }
 
+  // Called from template on paste button - kept same logic but improved error handling
   async handlePasteOrClear() {
     if (this.inputvalue) {
       this.inputvalue = '';
+      // return focus to input after clearing so mobile doesn't jump
+      this.focusInputSafe();
       return;
     }
 
     try {
-      const permission = await navigator.permissions?.query({
+      // Try clipboard permission (may be unsupported on some browsers)
+      const permission = await (navigator as any).permissions?.query?.({
         name: 'clipboard-read' as PermissionName,
-      });
+      }).catch(() => null);
 
       if (permission && permission.state === 'denied') {
         this.notification.showWarning('Please allow clipboard access to paste.', 'Clipboard Permission Denied');
@@ -88,11 +92,28 @@ export class SearchboxComponent {
       }
 
       this.inputvalue = text;
-      this.searchInput.nativeElement.focus();
+      this.focusInputSafe();
     } catch (err) {
       console.error('Paste failed:', err);
       this.notification.showWarning('Clipboard access denied or not supported in this browser.', 'Paste Error');
     }
+  }
+
+  private focusInputSafe() {
+    // Focus the input but wrapped in requestAnimationFrame to avoid layout jump on some mobiles
+    requestAnimationFrame(() => {
+      try {
+        this.searchInput?.nativeElement?.focus();
+        // also set selection to end
+        const el = this.searchInput?.nativeElement;
+        if (el && typeof el.setSelectionRange === 'function') {
+          const len = el.value?.length || 0;
+          el.setSelectionRange(len, len);
+        }
+      } catch (e) {
+        // ignore focus errors on unsupported environments
+      }
+    });
   }
 
   downloadVideo() {
@@ -127,5 +148,16 @@ export class SearchboxComponent {
         );
       },
     });
+  }
+
+  // Optional: small helper if you want to close dropdown via escape key
+  @HostListener('document:keydown.escape', ['$event'])
+  onEscape() {
+    if (this.showDropdown) this.showDropdown = false;
+  }
+
+  // Optional no-op if not used — keeps component safe if called externally
+  onInputFocus() {
+    // Intentionally empty: reserved for future focus behavior
   }
 }
