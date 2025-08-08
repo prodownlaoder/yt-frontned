@@ -5,6 +5,8 @@ import { UserComponent } from './pages/user/user.component';
 import { ContactComponent } from './pages/contact/contact.component';
 import { DownloadComponent } from './pages/download/download.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { AudioboxComponent } from './components/basic/audiobox/audiobox.component';
+import { AudiodownloadpageComponent } from './components/vd-components/audiodownloadpage/audiodownloadpage.component';
 
 export const routes: Routes = [
     {
@@ -15,6 +17,14 @@ export const routes: Routes = [
     {
         path:'home',
         component:HomeComponent
+    },
+    {
+        path: 'mp3',
+        component:AudioboxComponent
+    },
+    {
+        path:'mp3download',
+        component:AudiodownloadpageComponent
     },
     {
         path: 'download',

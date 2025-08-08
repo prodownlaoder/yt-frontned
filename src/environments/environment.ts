@@ -3,4 +3,3 @@ export const environment = {
   baseUrl: 'https://prodl.site',
   wsBaseUrl: 'wss://prodl.site/ws'
 };
-

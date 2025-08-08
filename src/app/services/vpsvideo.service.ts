@@ -7,13 +7,24 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class VideoService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
+  private readonly baseUrl = environment.baseUrl;
 
-  private baseUrl = environment.baseUrl;
-
+  /**
+   * Fetches video information for a given URL and quality.
+   */
   getVideoInfo(url: string, quality: string, requestId: string): Observable<any> {
     const payload = { url, quality, request_id: requestId };
-    console.log('[API] Sending POST request to /api/getvideo with payload:', payload);
+    console.debug('[VideoService] Sending POST request → /api/getvideo', payload);
     return this.http.post(`${this.baseUrl}/api/getvideo`, payload);
+  }
+
+  /**
+   * Fetches audio information for a given URL.
+   */
+  getAudioInfo(url: string, requestId: string): Observable<any> {
+    const payload = { url, request_id: requestId };
+    console.debug('[VideoService] Sending POST request → /api/getaudio', payload);
+    return this.http.post(`${this.baseUrl}/api/getaudio`, payload);
   }
 }
