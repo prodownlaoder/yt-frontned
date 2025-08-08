@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DailymotionComponent } from './dailymotion.component';
+import { FaqsComponent } from './faqs.component';
 
-describe('DailymotionComponent', () => {
-  let component: DailymotionComponent;
-  let fixture: ComponentFixture<DailymotionComponent>;
+describe('FaqsComponent', () => {
+  let component: FaqsComponent;
+  let fixture: ComponentFixture<FaqsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DailymotionComponent]
+      imports: [FaqsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DailymotionComponent);
+    fixture = TestBed.createComponent(FaqsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

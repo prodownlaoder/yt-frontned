@@ -1,66 +1,65 @@
+/* Common styling for all toast types */
 .custom-toast-error,
 .custom-toast-warning,
 .custom-toast-success,
 .custom-toast-info {
   font-size: 14px;
-  padding: 16px; /* Consistent padding for all types */
+  padding: 16px;
   border-radius: 8px;
-  animation: fadeInOut 5s forwards; /* Apply animation */
+  animation: fadeInOut 5s forwards;
+  min-width: 250px;
+  max-width: 350px;
   width: auto;
-  min-width: 250px; /* Adjust for more space */
-  max-width: 350px; /* Adjust for longer messages */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   margin: 10px;
+  color: white;
 }
 
+/* Specific colors for each type */
 .custom-toast-error {
-  background-color: #d9534f; /* Red for error */
-  color: white;
+  background-color: #d9534f; /* Red */
 }
 
 .custom-toast-warning {
-  background-color: #f0ad4e; /* Yellow for warnings */
-  color: white;
+  background-color: #f0ad4e; /* Orange-Yellow */
 }
 
 .custom-toast-success {
-  background-color: #5bc0de; /* Cyan for success */
-  color: white;
+  background-color: #5bc0de; /* Cyan */
 }
 
 .custom-toast-info {
-  background-color: #428bca; /* Blue for info */
-  color: white;
+  background-color: #428bca; /* Blue */
 }
 
-/* Keyframes for fade-in and fade-out animation */
+/* Toast animation */
 @keyframes fadeInOut {
   0% {
-    opacity: 0; /* Start with opacity 0 (invisible) */
-    transform: translateY(-20px); /* Start slightly off-screen */
+    opacity: 0;
+    transform: translateY(-20px);
   }
   20% {
-    opacity: 1; /* Fade-in to full opacity */
-    transform: translateY(0); /* Move to normal position */
+    opacity: 1;
+    transform: translateY(0);
   }
   80% {
-    opacity: 1; /* Keep it fully visible */
+    opacity: 1;
   }
   100% {
-    opacity: 0; /* Fade-out at the end */
-    transform: translateY(-20px); /* Move it slightly off-screen again */
+    opacity: 0;
+    transform: translateY(-20px);
   }
 }
 
-/* Ensure toasts stay fixed at the top-right corner */
+/* Toast positioning */
 .toast-top-right {
+  position: fixed;
   top: 20px;
   right: 20px;
-  position: fixed;
   z-index: 9999;
 }
 
-/* Responsive design for mobile devices */
+/* Responsive tweaks for mobile */
 @media (max-width: 768px) {
   .custom-toast-error,
   .custom-toast-warning,

@@ -6,10 +6,12 @@ import { LoaderComponent } from "../../components/basic/loader/loader.component"
 import { Meta, Title } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { HomecontentComponent } from "../../components/basic/homecontent/homecontent.component";
+import { FeaturesComponent } from "../features/features.component";
+import { FaqsComponent } from "../../components/basic/faqs/faqs.component";
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NavbarComponent, MainhomeComponent, FooterComponent, HttpClientModule, HomecontentComponent],
+  imports: [NavbarComponent, MainhomeComponent, FooterComponent, HttpClientModule, HomecontentComponent, FeaturesComponent, FaqsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

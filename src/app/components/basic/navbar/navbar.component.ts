@@ -22,10 +22,6 @@ export class NavbarComponent {
     document.body.style.overflow = this.isMenuOpen ? 'hidden' : 'auto';
   }
 
-  toggleVideoDownloader() {
-    this.isVideoDownloaderOpen = !this.isVideoDownloaderOpen;
-  }
-
   redirectToUserId() {
     // Implement your redirection logic here
     this.router.navigate(['/user']);
@@ -35,7 +31,6 @@ export class NavbarComponent {
   ngOnInit() {
     this.router.events.subscribe(() => {
       this.isMenuOpen = false;
-      this.isVideoDownloaderOpen = false;
     });
   }
 }

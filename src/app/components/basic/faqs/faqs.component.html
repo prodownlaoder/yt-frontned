@@ -1,0 +1,31 @@
+<section class="faq-container py-12 px-4 md:py-20 max-w-4xl mx-auto select-none">
+ <h2 class="text-3xl md:text-4xl font-extrabold text-center text-cyan-600 mb-10 tracking-tight leading-tight">
+  <span class="bg-gradient-to-r  from-cyan-500 to-cyan-700 text-transparent bg-clip-text">
+    YouTube Video Downloader FAQ
+  </span>
+</h2>
+
+
+  <div *ngFor="let faq of faqs; let i = index" class="faq-card bg-white shadow-md rounded-xl mb-4 transition-all duration-300 overflow-hidden">
+    <button
+      (click)="toggle(i)"
+      class="w-full flex justify-between items-center px-6 py-4 text-left text-lg font-semibold text-gray-800 focus:outline-none"
+    >
+      <span>{{ faq.question }}</span>
+      <svg
+        [ngClass]="{ 'rotate-180': openIndex === i }"
+        class="w-5 h-5 transform transition-transform duration-300 text-cyan-600"
+        fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+
+    <div
+      *ngIf="openIndex === i"
+      class="px-6 pb-4 text-gray-600 text-base"
+    >
+      {{ faq.answer }}
+    </div>
+  </div>
+</section>

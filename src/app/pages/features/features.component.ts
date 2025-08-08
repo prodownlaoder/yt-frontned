@@ -5,7 +5,6 @@ import { FooterComponent } from "../../components/basic/footer/footer.component"
 @Component({
   selector: 'app-features',
   standalone: true,
-  imports: [NavbarComponent, FooterComponent],
   templateUrl: './features.component.html',
   styleUrl: './features.component.css'
 })
