@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../../basic/navbar/navbar.component';
 import { FooterComponent } from '../../basic/footer/footer.component';
 import { NotificationService } from '../../../services/notification.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-downloadpage',
@@ -67,7 +68,7 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
   private connectWebSocket(): void {
     // const wsUrl = `ws://localhost:8080/ws/${this.websocketID}`;
 
-    const wsUrl = `wss://prodl.site/ws/${this.websocketID}`
+    const wsUrl = `${environment.wsBaseUrl}/${this.websocketID}`
     this.ws = new WebSocket(wsUrl);
 
     this.ws.onopen = () => {
@@ -100,7 +101,8 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
 
         // Handle final download URL
         if (data.event === 'download_result' && data.payload?.download_url) {
-          this.downloadUrl = `https://prodl.site${data.payload.download_url}`;
+          // this.downloadUrl = `https://prodl.site${data.payload.download_url}`;
+          this.downloadUrl = `${environment.baseUrl}${data.payload?.download_url}`
           this.downloadFileName = data.payload.file_name || 'video.mp4';
           this.downloadButtonText = 'Download Video';
           this.showProgress = false;
