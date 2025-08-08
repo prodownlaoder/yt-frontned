@@ -65,7 +65,9 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
   }
 
   private connectWebSocket(): void {
-    const wsUrl = `ws://localhost:8080/ws/${this.websocketID}`;
+    // const wsUrl = `ws://localhost:8080/ws/${this.websocketID}`;
+
+    const wsUrl = `wss://prodl.site/ws/${this.websocketID}`
     this.ws = new WebSocket(wsUrl);
 
     this.ws.onopen = () => {
