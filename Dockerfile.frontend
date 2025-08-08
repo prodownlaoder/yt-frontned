@@ -1,0 +1,37 @@
+# Stage 1: Build Angular App
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the application code
+COPY . .
+
+# Build the Angular app
+RUN npm run build
+
+# Stage 2: Serve Angular App with NGINX
+FROM nginx:alpine
+
+# Copy the built Angular app from the previous stage
+COPY --from=builder /app/dist/socialclip/browser /usr/share/nginx/html
+
+# Ensure correct permissions
+RUN chown -R nginx:nginx /usr/share/nginx/html
+RUN chmod -R 755 /usr/share/nginx/html
+
+# Rename and remove files
+RUN rm -f /usr/share/nginx/html/index.html && mv /usr/share/nginx/html/index.csr.html /usr/share/nginx/html/index.html
+
+# Copy the NGINX configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose the NGINX port
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,64 @@
+<app-navbar></app-navbar>
+
+<div class="flex justify-center items-center mt-1 sm:mt-10">
+  <div class="max-w-sm w-full rounded-2xl overflow-hidden shadow-2xl bg-white p-5" *ngIf="videoData; else errorBlock">
+
+    <!-- Uploader Info -->
+    <div class="p-2 flex items-center border border-gray-100 rounded-2xl mb-2">
+      <img [src]="videoData?.thumbnail" alt="Uploader" class="w-12 h-12 rounded-full object-cover" />
+      <div class="ml-4">
+        <p class="text-gray-800 font-semibold text-sm">{{ videoData?.uploader }}</p>
+        <p class="text-xs text-gray-500">{{ videoData?.platform }}</p>
+      </div>
+    </div>
+
+    <!-- Thumbnail -->
+    <div class="relative">
+      <img [src]="videoData?.thumbnail" alt="Video thumbnail" class="w-full h-96 object-cover rounded-2xl" />
+    </div>
+
+    <!-- Video Info -->
+    <div class="px-6 py-4 space-y-4">
+      <div class="text-center text-base font-semibold">
+        {{ videoData?.title }}
+      </div>
+
+      <div class="text-center text-sm text-slate-500">
+        Views: {{ videoData?.view_count | number }} |
+        Duration: {{ videoData?.duration }} sec |
+        Quality: {{ videoData?.quality }}
+      </div>
+
+      <!-- Download Button Container with Fill -->
+      <div class="relative w-full rounded-2xl overflow-hidden h-12 border border-gray-300">
+        <!-- Fill Background Based on Progress -->
+        <div class="absolute top-0 left-0 h-full bg-cyan-400 transition-all duration-300 ease-linear z-0"
+          [ngStyle]="{ width: progressPercent + '%' }"></div>
+
+        <!-- Transparent Button Content on Top -->
+        <button (click)="HandelDownload()"
+          class="relative z-10 flex items-center justify-center w-full h-full px-3 text-black bg-transparent hover:bg-transparent disabled:bg-transparent rounded-2xl">
+          <span class="relative z-20 font-medium">{{ downloadButtonText }}</span>
+        </button>
+      </div>
+
+
+      <!-- Error Message -->
+      <p *ngIf="errorMessage" class="text-red-500 text-sm text-center mt-2">{{ errorMessage }}</p>
+
+      <!-- Share -->
+      <p class="text-center font-serif text-sm select-none text-slate-600">
+        Download faster, save easier! Share this app with your friends and family.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Fallback -->
+<ng-template #errorBlock>
+  <div class="text-center mt-10 text-red-500 text-sm">
+    {{ errorMessage }}
+  </div>
+</ng-template>
+
+<app-footer></app-footer>

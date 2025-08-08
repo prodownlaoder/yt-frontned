@@ -1,0 +1,9 @@
+.thefont{
+  font-family: cursive;
+}
+@media (max-width: 768px) {
+   .hidden.md\:flex {
+     display: none;
+   }
+
+ }

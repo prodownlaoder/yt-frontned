@@ -1,0 +1,89 @@
+<app-navbar></app-navbar>
+
+<div class="min-h-screen flex flex-col justify-between">
+  <!-- Main content wrapper -->
+  <div class="flex-grow flex flex-col items-center px-4 md:px-6 py-10">
+    <!-- Header section -->
+    <div class="w-full max-w-3xl text-center mb-8">
+      <span class="inline-flex cursor-pointer items-center rounded-full bg-cyan-500 px-4 py-1.5 text-sm font-semibold text-white mb-4 transform hover:scale-105 transition-transform duration-200">
+        <span class="animate-pulse mr-2">✨</span>
+        Contact Form
+      </span>
+      <p class="mt-2 text-base leading-7 text-gray-600 max-w-2xl mx-auto px-4">
+        We'd love to hear from you! Please fill out the form below, and we'll get back to you as soon as possible.
+      </p>
+    </div>
+
+    <!-- Form section -->
+    <div class="w-full md:w-[60%] max-w-2xl px-4">
+      <form class="space-y-4" (ngSubmit)="onSubmit()">
+        <!-- Name Field -->
+        <label class="block relative bg-white border py-2 px-3 rounded-lg shadow-md focus-within:border-cyan-500 transition duration-300" for="name">
+          <input 
+            id="name" 
+            name="name" 
+            type="text" 
+            placeholder="Your name" 
+            [(ngModel)]="name" 
+            required
+            class="text-sm w-full outline-none bg-transparent"
+          >
+        </label>
+
+        <!-- Email Field -->
+        <label class="block relative bg-white border py-2 px-3 rounded-lg shadow-md focus-within:border-cyan-500 transition duration-300" for="email">
+          <input 
+            id="email" 
+            name="email" 
+            type="email" 
+            placeholder="Your email" 
+            [(ngModel)]="email" 
+            required
+            class="text-sm w-full outline-none bg-transparent"
+          >
+        </label>
+
+        <!-- Message Field -->
+        <label class="block relative bg-white border py-2 px-3 rounded-lg shadow-md focus-within:border-cyan-500 transition duration-300" for="message">
+          <textarea 
+            id="message" 
+            name="message" 
+            rows="3" 
+            placeholder="Your message" 
+            [(ngModel)]="message" 
+            required
+            class="text-sm w-full outline-none bg-transparent resize-y min-h-[80px]"
+          ></textarea>
+        </label>
+
+        <!-- Message Status -->
+        <div *ngIf="showSuccessMessage || showFailureMessage" class="p-2">
+          <div *ngIf="showSuccessMessage" class="bg-green-100 text-sm text-green-600 p-3 rounded-lg border border-green-600">
+            Message sent successfully!
+            <button type="button" (click)="showSuccessMessage = false" class="text-green-600 text-xs float-right">
+              ✕
+            </button>
+          </div>
+          <div *ngIf="showFailureMessage" class="bg-red-100 text-sm text-red-600 p-3 rounded-lg border border-red-600">
+            Failed to send message.
+            <button type="button" (click)="showFailureMessage = false" class="text-red-600 text-xs float-right">
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center pt-2">
+          <button 
+            type="submit"
+            class="w-auto px-6 py-2 bg-cyan-600 text-white text-sm font-medium rounded-lg hover:bg-cyan-700 transition duration-300"
+          >
+            Send Message
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

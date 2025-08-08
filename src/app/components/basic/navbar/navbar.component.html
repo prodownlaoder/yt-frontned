@@ -1,0 +1,92 @@
+<header class="relative inset-x-0 top-0 z-30 mx-auto w-full max-w-screen-md border border-gray-100 bg-white/80 py-3 shadow backdrop-blur-lg md:top-3 md:rounded-3xl lg:max-w-screen-lg mb-10">
+  <div class="px-4">
+    <div class="flex items-center justify-between">
+      <div class="flex shrink-0" routerLink="/home">
+        <a aria-current="page" class="flex items-center">
+          <img class="h-8 w-auto" src="faveicon-lg.png" alt="">
+        </a>
+      </div>
+      <div class="hidden md:flex md:items-center md:justify-center md:gap-5 cursor-pointer">
+        <a aria-current="page" class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900" routerLink="/home">Home</a>
+        <div class="relative group">
+          <a class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900">Video Downloader</a>
+          <div class="absolute hidden group-hover:block bg-white border border-gray-200 rounded-lg shadow-lg z-50 w-48">
+            <a routerLink="/youtube" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">YouTube</a>
+            <a routerLink="/facebook" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Facebook</a>
+            <a routerLink="/instagram" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Instagram</a>
+            <a routerLink="/tiktok" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">TikTok</a>
+            <!-- <a routerLink="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Twitter</a> -->
+            <a routerLink="/linkedin" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">LinkedIn</a>
+            <a routerLink="/pinterest" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pinterest</a>
+            <a routerLink="/bilibili" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">BiliBili</a>
+            <a routerLink="/dailymotion" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dailymotion</a>
+            <a routerLink="/vimeo" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Vimeo</a>
+            <a routerLink="/snapchat" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Snapchat</a>
+            <a routerLink="/reddit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Reddit</a>
+            <a routerLink="/okru" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">OkRu</a>
+          </div>
+        </div>
+        <a class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900" routerLink="/downloadapk">Download App</a>
+        <a class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900" routerLink="/feature">Features</a>
+        <a class="inline-block rounded-lg px-2 py-1 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900" routerLink="/contact">Contact</a>
+      </div>
+      
+      <div class="hidden md:flex items-center justify-end cursor-pointer relative group">
+        <a class="inline-flex items-center justify-center rounded-xl bg-cyan-500 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:bg-cyan-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600" (click)="redirectToUserId()">
+          <img src="user.png" alt="" class="h-4 w-7 content-center align-middle">
+        </a>
+        <div class="absolute hidden bg-cyan-700 text-white text-xs rounded-full px-3 py-3 top-full mt-2 shadow-lg z-50 ">
+          
+        </div>
+      </div>
+
+      <div class="flex md:hidden">
+        <button (click)="toggleMenu()" type="button" class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="toggle menu">
+          <svg *ngIf="!isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg *ngIf="isMenuOpen" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div *ngIf="isMenuOpen" class="md:hidden mobile-menu">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      <a aria-current="page" class="block rounded-md px-3 py-2 text-center font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900" routerLink="/home">Home</a>
+     
+      <div class="relative">
+        <a (click)="toggleVideoDownloader()" class="block rounded-md px-3 py-2 text-center font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 ">
+          Video Downloader
+        </a>
+        
+        <div *ngIf="isVideoDownloaderOpen" class="pl-4">
+          <a routerLink="/youtube" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">YouTube</a>
+          <a routerLink="/facebook" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center ">Facebook</a>
+          <a routerLink="/instagram" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">Instagram</a>
+          <a routerLink="/tiktok" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">Tiktok</a>
+          <a routerLink="/linkedin" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">LinkedIn</a>
+          <a routerLink="/pinterest" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">Pinterest</a>
+          <a routerLink="/bilibili" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">BiliBili</a>
+          <a routerLink="/dailymotion" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">Dailymotion</a>
+          <a routerLink="/vimeo" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">Vimeo</a>
+          <a routerLink="/reddit" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">Reddit</a>
+          <a routerLink="/snapchat" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">Snapchat</a>
+          <a routerLink="/okru" class="block rounded-md px-3 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 text-center">OkRu</a>
+        </div>
+      </div>
+      
+      <a class="block rounded-md px-3 py-2 text-center font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900" routerLink="/downloadapk">Download App</a>
+      <a class="block rounded-md px-3 py-2 text-center font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900" routerLink="/feature">Features</a>
+      <a class="block rounded-md px-3 py-2 text-center font-medium text-gray-900 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900" routerLink="/contact">Contact</a>
+      
+      <button class="w-full rounded-md bg-cyan-500 px-3 py-2 flex justify-center items-center font-medium text-white transition-all duration-200 hover:bg-cyan-600" routerLink="/user">
+        <img src="user.png" alt="" class="h-5 w-auto">
+      </button>
+      
+    </div>
+  </div>
+</header>

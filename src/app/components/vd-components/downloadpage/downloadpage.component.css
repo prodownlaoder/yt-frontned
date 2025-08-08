@@ -1,0 +1,47 @@
+
+
+
+
+.loading-text {
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 1rem;
+  color: #06b6d4;
+  font-weight: bold;
+}
+
+@media (min-width: 1024px) {
+  .max-w-sm {
+    max-width: 400px;
+  }
+}
+@media (max-width: 640px) {
+  .max-w-sm {
+    max-width: 100%;
+  }
+}
+
+
+
+/* Loading Bar */
+.loading-bar {
+    position: relative;
+    background-color: #e2e8f0;
+    height: 1rem;
+    width: 100%;
+    border-radius: 9999px;
+    overflow: hidden;
+  }
+  
+  .loading-bar-inner {
+    background-color: #06b6d4;
+    height: 100%;
+    transition: width 0.5s linear;
+  }
+  
+
+  .none{
+    display: none;
+  }
+  
+  

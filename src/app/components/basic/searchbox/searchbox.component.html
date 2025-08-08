@@ -1,0 +1,66 @@
+<div class="mt-8 w-full">
+  <div class="mx-auto relative bg-white min-w-sm max-w-2xl flex flex-col md:flex-row items-center justify-center border py-2 px-2 rounded-2xl gap-2 shadow-2xl focus-within:border-cyan-500 transition-all duration-300 animate-outline">
+    <input
+      #searchInput
+      id="search-bar"
+      [(ngModel)]="inputvalue"
+      placeholder="Enter URL or keyword to find your favorite videos!"
+      name="search"
+      class="font-thin px-6 py-2 w-full rounded-md flex-1 outline-none bg-white transition-all duration-300"
+    />
+
+    <!-- Dropdown + Button Row -->
+    <div class="flex flex-row justify-center gap-2 relative">
+      <!-- Quality Dropdown -->
+      <div class="relative w-full sm:w-auto" #dropdownRef>
+        <button
+          (click)="toggleDropdown($event)"
+          type="button"
+          class="w-full sm:w-auto flex items-center justify-between px-3 sm:px-4 py-2 bg-slate-50 text-black border border-gray-300 rounded-xl text-sm hover:bg-slate-100 focus:outline-none"
+        >
+          <span class="truncate">{{ selectedQuality || 'Select Quality' }}</span>
+          <svg class="ml-2 w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <!-- Dropdown Items -->
+        <ul
+          *ngIf="showDropdown"
+          class="absolute left-0 sm:right-0 top-full mt-1 w-full sm:w-48 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-60 overflow-y-auto text-left"
+        >
+          <li
+            *ngFor="let q of qualityOptions"
+            (click)="selectQuality(q)"
+            class="px-4 py-2 hover:bg-slate-100 cursor-pointer text-sm"
+          >
+            {{ q }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Download Button -->
+      <button
+        type="button"
+        class="md:w-auto flex items-center px-4 py-2 bg-cyan-500 border-cyan-500 text-white active:scale-95 duration-100 border rounded-xl transition-all hover:bg-cyan-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
+        (click)="downloadVideo()"
+      >
+        <span *ngIf="!isLoading" class="text-sm font-semibold whitespace-nowrap truncate mx-auto">
+          Download
+        </span>
+        <span *ngIf="isLoading" class="flex items-center">
+          <svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+            <path class="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 0115.14-4.672A4.25 4.25 0 0120 12h-2a2.25 2.25 0 10-2.45-2.25A7.973 7.973 0 014 12z"></path>
+          </svg>
+          Loading...
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <div class="select-none font-light text-sm mt-3">
+    Downloading copyrighted material is not permitted or supported by our service.
+  </div>
+</div>
