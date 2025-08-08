@@ -1,6 +1,6 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { HttpClientModule, provideHttpClient } from '@angular/common/http'; // Import HttpClientModule and provideHttpClient
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http'; // Import HttpClientModule and provideHttpClient
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -27,6 +27,6 @@ export const appConfig: ApplicationConfig = {
     })),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    provideHttpClient() // Use `provideHttpClient()` to register the HttpClientModule
+    provideHttpClient(withFetch()) 
   ]
 };
