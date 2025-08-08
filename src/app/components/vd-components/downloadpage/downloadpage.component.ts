@@ -14,17 +14,16 @@ import { FooterComponent } from '../../basic/footer/footer.component';
 export class DownloadpageComponent implements OnInit, OnDestroy {
   videoData: any = null;
   requestId: string = '';
-  websocketID : string = '';
+  websocketID: string = '';
   errorMessage: string | null = null;
-  downloadButtonText: string = 'Download';
+  downloadButtonText: string = 'Preparing For Download';
 
   ws: WebSocket | null = null;
   progressPercent: number = 0;
-  progressMessage: string = '';
   showProgress: boolean = false;
 
   ngOnInit(): void {
-    const { videoData, requestId , WebsocketID } = history.state;
+    const { videoData, requestId, WebsocketID } = history.state;
 
     if (!videoData || !requestId) {
       this.errorMessage = 'No video data available. Please go back and try again.';
@@ -47,38 +46,29 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
   }
 
   connectWebSocket(): void {
-    const wsUrl = `wss://prodl.site/ws/${this.websocketID}`;
-
-    // const wsUrl = `ws://localhost:8080/ws/${this.websocketID}`;
+    // const wsUrl = `wss://prodl.site/ws/${this.websocketID}`;
+    const wsUrl = `ws://localhost:8080/ws/${this.websocketID}`;
 
     this.ws = new WebSocket(wsUrl);
-
-    this.ws.onopen = () => {
-      this.showProgress = true;
-      this.downloadButtonText = 'Starting...';
-      console.log('[WebSocket] Connected');
-    };
 
     this.ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log('[WebSocket] Message:', data);
 
-      if (data.progress !== undefined) {
+      if (data.message && data.progress !== undefined) {
+        // Show message + progress together
+        this.downloadButtonText = `${data.message}  ${data.progress.toFixed(1)}%`;
         this.progressPercent = data.progress;
-        this.downloadButtonText = `Downloading ${data.progress}%`;
       }
 
-      if (data.message) {
-        this.progressMessage = data.message;
-      }
-
+      // Optional: hide progress after 100%
       if (data.progress >= 100 || data.message?.toLowerCase().includes('done')) {
-        this.downloadButtonText = 'Completed';
         setTimeout(() => {
           this.showProgress = false;
         }, 3000);
       }
     };
+
 
     this.ws.onerror = (err) => {
       console.error('[WebSocket] Error:', err);
@@ -94,3 +84,6 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
     };
   }
 }
+
+
+
