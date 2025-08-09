@@ -1,0 +1,105 @@
+/*
+===========================================================
+ Project Overview
+===========================================================
+ This is a Video Downloading Web Application built with Angular 18
+ and Tailwind CSS, using Server-Side Rendering (SSR) for better SEO
+ and performance.
+
+ The app allows users to:
+ - Download videos with selectable quality.
+ - Extract MP3 audio from youtube .
+ - Authenticate with Firebase (Email/Password & Google Sign-In).
+ - Send messages through a contact form using EmailJS.
+ - See real-time download progress Using Websockets.
+ - Receive notifications for errors, warnings, and success messages.
+
+===========================================================
+ Main Features
+===========================================================
+ - Video Downloading (with quality selection)
+ - MP3 Downloading (audio only)
+ - Responsive UI (Tailwind CSS + custom styles)
+ - Authentication (Firebase)
+ - Contact Form (EmailJS)
+ - Real-time Download Progress
+ - Global Notification System (ngx-toastr)
+
+===========================================================
+ Pages & Routes
+===========================================================
+
+ 1. Home Page (/home)
+    - Displays main content, search box, features, and FAQs.
+    - User pastes video URL, selects quality, and clicks Download.
+    - Fetches video info and redirects to /download.
+
+ 2. Download Page (/download)
+    - Shows title, thumbnail, uploader name, platform name.
+    - Download button:
+        Step 1: Shows server download progress.
+        Step 2: Allows final download to user's device.
+
+ 3. MP3 Page (/mp3)
+    - Same as Home Page but without quality selection.
+    - Redirects to /mp3download after URL is submitted.
+
+ 4. MP3 Download Page (/mp3download)
+    - Same as /download but for MP3 audio.
+    - Shows MP3 download progress and download button.
+
+ 5. Contact Page (/contact)
+    - Form fields: Name, Email, Message.
+    - Uses EmailJS to send the message to the site owner.
+
+ 6. User Page (/user)
+    - Login / Signup form.
+    - Email & Password or Google Sign-In via Firebase Auth.
+    - On signup, creates a profile in Firebase.
+
+ 7. Profile Page (/profile)
+    - Displays logged-in user's name and email.
+    - Logout button to end the session.
+
+===========================================================
+ Notification System
+===========================================================
+ - Uses ngx-toastr for global alerts.
+ - Can display errors, warnings, and success messages.
+ - Shown in the top-right corner of the screen.
+ - Works across all pages.
+
+===========================================================
+ Technology Stack
+===========================================================
+ - Framework: Angular 18 (SSR enabled)
+ - Styling: Tailwind CSS + custom CSS
+ - Auth: Firebase Authentication
+ - Email: EmailJS
+ - Notifications: ngx-toastr
+
+===========================================================
+ Build & Run Instructions
+===========================================================
+ 1. Install dependencies:
+    npm install
+
+ 2. Build the SSR application:
+    ng build
+
+ 3. Run the SSR server:
+    npm run serve:ssr
+
+ 4. The app will be available at:
+    http://localhost:4000
+
+===========================================================
+ Additional Notes
+===========================================================
+ - Fully responsive for mobile and desktop.
+ - SEO-friendly SSR build.
+ - Download functionality relies on backend API responses.
+ - Routes managed through Angular Router.
+ - Components are separated by page.
+ - Notification service is reusable across all components.
+*/
