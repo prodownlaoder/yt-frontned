@@ -1,6 +1,14 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Inject,
+  PLATFORM_ID,
+  inject
+} from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NavbarComponent } from '../../basic/navbar/navbar.component';
 import { FooterComponent } from '../../basic/footer/footer.component';
 import { NotificationService } from '../../../services/notification.service';
@@ -15,6 +23,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class DownloadpageComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
+  private router = inject(Router);
 
   videoData: any = null;
   requestId: string = '';
@@ -30,24 +39,38 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
 
   private ws: WebSocket | null = null;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
   ngOnInit(): void {
-    const { videoData, requestId, WebsocketID } = history.state;
+    if (isPlatformBrowser(this.platformId)) {
+      // First try to get state from the current navigation
+      const nav = this.router.getCurrentNavigation();
+      const state = nav?.extras?.state || history.state || {};
 
-    if (!videoData || !requestId || !WebsocketID) {
-      this.errorMessage = 'No video data available. Please go back and try again.';
-      this.notificationService.showError(this.errorMessage);
-      return;
+      this.videoData = state.videoData;
+      this.requestId = state.requestId;
+      this.websocketID = state.WebsocketID;
+
+      if (!this.videoData || !this.requestId || !this.websocketID) {
+        this.errorMessage = 'No video data available. Please go back and try again.';
+        this.notificationService.showError(this.errorMessage);
+        return;
+      }
+
+      this.connectWebSocket();
+    } else {
+      // On server side, avoid browser APIs
+      this.videoData = null;
+      this.requestId = '';
+      this.websocketID = '';
+      this.errorMessage = 'Video data is only available in browser runtime.';
     }
-
-    this.videoData = videoData;
-    this.requestId = requestId;
-    this.websocketID = WebsocketID;
-
-    this.connectWebSocket();
   }
 
   ngOnDestroy(): void {
-    this.ws?.close();
+    if (isPlatformBrowser(this.platformId)) {
+      this.ws?.close();
+    }
   }
 
   handleDownload(): void {
@@ -56,19 +79,19 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const anchor = document.createElement('a');
-    anchor.href = this.downloadUrl;
-    anchor.download = this.downloadFileName;
-    anchor.target = '_blank';
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
+    if (isPlatformBrowser(this.platformId)) {
+      const anchor = document.createElement('a');
+      anchor.href = this.downloadUrl;
+      anchor.download = this.downloadFileName;
+      anchor.target = '_blank';
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+    }
   }
 
   private connectWebSocket(): void {
-    // const wsUrl = `ws://localhost:8080/ws/${this.websocketID}`;
-
-    const wsUrl = `${environment.wsBaseUrl}/${this.websocketID}`
+    const wsUrl = `${environment.wsBaseUrl}/${this.websocketID}`;
     this.ws = new WebSocket(wsUrl);
 
     this.ws.onopen = () => {
@@ -82,7 +105,6 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
         const data = JSON.parse(event.data);
         console.log('[WebSocket] Message:', data);
 
-        // Handle download error
         if (data.status === 'error') {
           const msg = data.message || 'An unknown error occurred during download.';
           this.downloadButtonText = 'Error';
@@ -91,7 +113,6 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
           return;
         }
 
-        // Handle download completed
         if (data.status === 'completed' || data.message?.toLowerCase().includes('complete')) {
           this.progressPercent = 100;
           this.downloadButtonText = 'Download Video';
@@ -99,17 +120,14 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
           return;
         }
 
-        // Handle final download URL
         if (data.event === 'download_result' && data.payload?.download_url) {
-          // this.downloadUrl = `https://prodl.site${data.payload.download_url}`;
-          this.downloadUrl = `${environment.baseUrl}${data.payload?.download_url}`
+          this.downloadUrl = `${environment.baseUrl}${data.payload?.download_url}`;
           this.downloadFileName = data.payload.file_name || 'video.mp4';
           this.downloadButtonText = 'Download Video';
           this.showProgress = false;
           return;
         }
 
-        // Handle progress updates
         if (typeof data.progress === 'number') {
           this.progressPercent = data.progress;
           this.downloadButtonText = `${data.message || 'Downloading'} ${Math.floor(data.progress)}%`;

@@ -1,5 +1,13 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Inject,
+  PLATFORM_ID,
+  inject
+} from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
 import { NavbarComponent } from '../../basic/navbar/navbar.component';
 import { FooterComponent } from '../../basic/footer/footer.component';
 import { NotificationService } from '../../../services/notification.service';
@@ -10,10 +18,11 @@ import { environment } from '../../../../environments/environment';
   standalone: true,
   imports: [FooterComponent, NavbarComponent, CommonModule],
   templateUrl: './audiodownloadpage.component.html',
-  styleUrl: './audiodownloadpage.component.css'
+  styleUrls: ['./audiodownloadpage.component.css'],
 })
 export class AudiodownloadpageComponent implements OnInit, OnDestroy {
   private notificationService = inject(NotificationService);
+  private router = inject(Router);
 
   audioData: any = null;
   requestId: string = '';
@@ -29,24 +38,38 @@ export class AudiodownloadpageComponent implements OnInit, OnDestroy {
 
   private ws: WebSocket | null = null;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
   ngOnInit(): void {
-    const { audioData, requestId, WebsocketID } = history.state;
+    if (isPlatformBrowser(this.platformId)) {
+      // First try from router state (when navigating)
+      const nav = this.router.getCurrentNavigation();
+      const state = nav?.extras?.state || history.state || {};
 
-    if (!audioData || !requestId || !WebsocketID) {
-      this.errorMessage = 'No audio data available. Please go back and try again.';
-      this.notificationService.showError(this.errorMessage);
-      return;
+      this.audioData = state.audioData;
+      this.requestId = state.requestId;
+      this.websocketID = state.WebsocketID;
+
+      if (!this.audioData || !this.requestId || !this.websocketID) {
+        this.errorMessage = 'No audio data available. Please go back and try again.';
+        this.notificationService.showError(this.errorMessage);
+        return;
+      }
+
+      this.connectWebSocket();
+    } else {
+      // Server-side rendering – no browser APIs
+      this.audioData = null;
+      this.requestId = '';
+      this.websocketID = '';
+      this.errorMessage = 'Audio data is only available in browser runtime.';
     }
-
-    this.audioData = audioData;
-    this.requestId = requestId;
-    this.websocketID = WebsocketID;
-
-    this.connectWebSocket();
   }
 
   ngOnDestroy(): void {
-    this.ws?.close();
+    if (isPlatformBrowser(this.platformId)) {
+      this.ws?.close();
+    }
   }
 
   handleDownload(): void {
@@ -55,13 +78,15 @@ export class AudiodownloadpageComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const anchor = document.createElement('a');
-    anchor.href = this.downloadUrl;
-    anchor.download = this.downloadFileName;
-    anchor.target = '_blank';
-    document.body.appendChild(anchor);
-    anchor.click();
-    document.body.removeChild(anchor);
+    if (isPlatformBrowser(this.platformId)) {
+      const anchor = document.createElement('a');
+      anchor.href = this.downloadUrl;
+      anchor.download = this.downloadFileName;
+      anchor.target = '_blank';
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+    }
   }
 
   private connectWebSocket(): void {
@@ -79,7 +104,6 @@ export class AudiodownloadpageComponent implements OnInit, OnDestroy {
         const data = JSON.parse(event.data);
         console.log('[WebSocket] Message:', data);
 
-        // Handle audio download error
         if (data.status === 'error') {
           const msg = data.message || 'An unknown error occurred during audio download.';
           this.downloadButtonText = 'Error';
@@ -88,7 +112,6 @@ export class AudiodownloadpageComponent implements OnInit, OnDestroy {
           return;
         }
 
-        // Handle audio download completed
         if (data.status === 'completed' || data.message?.toLowerCase().includes('complete')) {
           this.progressPercent = 100;
           this.downloadButtonText = 'Download Audio';
@@ -96,7 +119,6 @@ export class AudiodownloadpageComponent implements OnInit, OnDestroy {
           return;
         }
 
-        // Handle final audio download URL
         if (data.event === 'download_result' && data.payload?.download_url) {
           this.downloadUrl = `${environment.baseUrl}${data.payload?.download_url}`;
           this.downloadFileName = data.payload.file_name || 'audio.mp3';
@@ -105,7 +127,6 @@ export class AudiodownloadpageComponent implements OnInit, OnDestroy {
           return;
         }
 
-        // Handle progress updates
         if (typeof data.progress === 'number') {
           this.progressPercent = data.progress;
           this.downloadButtonText = `${data.message || 'Downloading Audio'} ${Math.floor(data.progress)}%`;
