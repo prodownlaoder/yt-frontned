@@ -34,7 +34,7 @@ export class SearchboxComponent {
     '1080p',
     '1440p',
     '2k',
-    '4K',
+    '4k',
   ];
 
   private api = inject(VideoService);
