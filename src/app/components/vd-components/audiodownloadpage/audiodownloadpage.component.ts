@@ -122,7 +122,7 @@ export class AudiodownloadpageComponent implements OnInit, OnDestroy {
         if (data.event === 'download_result' && data.payload?.download_url) {
           this.downloadUrl = `${environment.baseUrl}${data.payload?.download_url}`;
           this.downloadFileName = data.payload.file_name || 'audio.mp3';
-          this.downloadButtonText = 'Download Audio';
+          this.downloadButtonText = 'Save To Device';
           this.showProgress = false;
           return;
         }

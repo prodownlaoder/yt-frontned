@@ -13,11 +13,12 @@ import { NavbarComponent } from '../../basic/navbar/navbar.component';
 import { FooterComponent } from '../../basic/footer/footer.component';
 import { NotificationService } from '../../../services/notification.service';
 import { environment } from '../../../../environments/environment';
+import { DownloadpagecontentComponent } from "../../basic/downloadpagecontent/downloadpagecontent.component";
 
 @Component({
   selector: 'app-downloadpage',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, NavbarComponent, DownloadpagecontentComponent],
   templateUrl: './downloadpage.component.html',
   styleUrls: ['./downloadpage.component.css'],
 })
@@ -123,7 +124,7 @@ export class DownloadpageComponent implements OnInit, OnDestroy {
         if (data.event === 'download_result' && data.payload?.download_url) {
           this.downloadUrl = `${environment.baseUrl}${data.payload?.download_url}`;
           this.downloadFileName = data.payload.file_name || 'video.mp4';
-          this.downloadButtonText = 'Download Video';
+          this.downloadButtonText = 'Save To Device';
           this.showProgress = false;
           return;
         }
