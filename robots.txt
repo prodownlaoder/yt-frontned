@@ -7,5 +7,7 @@ Disallow: /user
 Disallow: /contact
 Disallow: /profile
 Disallow: /image-details/
-Disallow: /*?*
+# Optional: Block only unwanted query parameters instead of all
+# Disallow: /*utm_*
+# Disallow: /*sessionid=*
 Sitemap: https://videosaver.online/sitemap.xml
