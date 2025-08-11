@@ -10,42 +10,41 @@ import { AudiodownloadpageComponent } from './components/vd-components/audiodown
 
 export const routes: Routes = [
     {
-        path:'',
-        redirectTo:'home',
-        pathMatch:'full'
+        path: '',
+        component: HomeComponent, 
+        pathMatch: 'full'
     },
     {
-        path:'home',
-        component:HomeComponent
+        path: 'home',
+        redirectTo: '', 
+        pathMatch: 'full'
     },
     {
         path: 'mp3',
-        component:AudioboxComponent
+        component: AudioboxComponent
     },
     {
-        path:'mp3download',
-        component:AudiodownloadpageComponent
+        path: 'mp3download',
+        component: AudiodownloadpageComponent
     },
     {
         path: 'download',
-        component:DownloadComponent
+        component: DownloadComponent
     },
     {
-        path:'user',
-        component:UserComponent
-    },
-    
-    {
-        path:'contact',
-        component:ContactComponent
+        path: 'user',
+        component: UserComponent
     },
     {
-        path:"profile",
-        component:ProfileComponent
+        path: 'contact',
+        component: ContactComponent
     },
     {
-        path:'**',
-        component:ErrorPageComponent
+        path: 'profile',
+        component: ProfileComponent
     },
-    
+    {
+        path: '**',
+        component: ErrorPageComponent
+    },
 ];
