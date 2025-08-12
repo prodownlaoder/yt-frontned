@@ -1,13 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /mp3
-Disallow: /mp3download
-Disallow: /download
-Disallow: /user
-Disallow: /contact
-Disallow: /profile
-Disallow: /image-details/
-# Optional: Block only unwanted query parameters instead of all
-# Disallow: /*utm_*
-# Disallow: /*sessionid=*
+
 Sitemap: https://videosaver.online/sitemap.xml
